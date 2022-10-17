@@ -1,9 +1,14 @@
-/**
- * User: CHT
- * Date: 2020/5/27
- * Time: 9:52
+/*
+* @Author: 阿扎
+* @Date:   2022-10-17 16:20:14
+* @Last Modified by:   Azha
+* @Last Modified time: 2022-10-17 17:02:32
 */
 
+/**
+ * [定义方向]
+ * @type {Object}
+ */
 export const direction = {
   top: 1,
   right: 2,
@@ -11,8 +16,12 @@ export const direction = {
   left: 4
 }
 
-// [0,-1] 右：[1,0] 下 [1,1] 左 [-1,0]
 
+/**
+ * [定义方向向量]
+ * 上[0,-1] 右[1,0] 下[0,1] 左[-1,0]
+ * @type {Object}
+ */
 export const directionVector = {
   [direction.top]: [0, -1],
   [direction.right]: [1, 0],

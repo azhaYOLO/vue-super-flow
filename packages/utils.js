@@ -1,9 +1,14 @@
-/**
- * User: CHT
- * Date: 2020/5/8
- * Time: 14:03
- */
+/*
+* @Author: 阿扎
+* @Date:   2022-10-17 16:20:14
+* @Last Modified by:   Azha
+* @Last Modified time: 2022-10-17 17:05:22
+*/
 
+/**
+ * [mark description]
+ * @type {Object}
+ */
 export const mark = {
   relationMark: 'id',
   startMark: 'startId',

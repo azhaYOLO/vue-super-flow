@@ -1,8 +1,10 @@
-/**
- * User: CHT
- * Date: 2020/6/3
- * Time: 14:53
- */
+/*
+* @Author: 阿扎
+* @Date:   2022-10-17 16:20:14
+* @Last Modified by:   Azha
+* @Last Modified time: 2022-10-17 16:59:56
+*/
+
 export default class GraphEvent {
   constructor () {
     this.listeners = {}
