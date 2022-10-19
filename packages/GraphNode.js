@@ -1,189 +1,216 @@
 /*
-* @Author: 阿扎
-* @Date:   2022-10-17 16:20:14
-* @Last Modified by:   Azha
-* @Last Modified time: 2022-10-17 17:00:03
-*/
+ * @Author: 阿扎
+ * @Date:   2022-10-17 16:20:14
+ * @Last Modified by:   Azha
+ * @Last Modified time: 2022-10-19 17:24:21
+ */
 
-import {
-  minus,
-  uuid,
-  vector,
-  mark
-} from './utils'
+import { minus, uuid, vector, mark } from "./utils";
 
-import {
-  direction,
-  directionVector
-} from './types'
-
+import { direction, directionVector } from "./types";
 
 export default class GraphNode {
-  constructor (props, graph) {
+  constructor(props, graph) {
     const {
       width = 180,
       height = 100,
       coordinate = [0, 0],
-      meta = null
-    } = props
+      meta = null,
+    } = props;
 
-    this.$options = props
+    this.$options = props;
 
-    const id = props[mark.relationMark] || uuid('node')
+    const id = props[mark.relationMark] || uuid("node");
 
-    this.key = uuid('node')
-    this.graph = graph
+    this.key = uuid("node");
+    this.graph = graph;
 
-    this[mark.relationMark] = id
-    this.coordinate = [...coordinate]
-    this.meta = meta
+    this[mark.relationMark] = id;
+    this.coordinate = [...coordinate];
+    this.meta = meta;
 
-    this.width = width
-    this.height = height
+    this.width = width;
+    this.height = height;
   }
 
-  get position () {
-    return vector(this.coordinate)
-      .add(this.graph.origin)
-      .end
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [获取节点位置]
+   * @return {[type]} [description]
+   */
+  get position() {
+    return vector(this.coordinate).add(this.graph.origin).end;
   }
 
-  set position (position) {
-    this.coordinate = vector(position)
-      .minus(this.graph.origin)
-      .end
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [设置节点位置]
+   * @param  {[type]} position   [description]
+   * @return {[type]}            [description]
+   */
+  set position(position) {
+    this.coordinate = vector(position).minus(this.graph.origin).end;
   }
 
-  get center () {
-    return vector(this.coordinate)
-      .add([this.width / 2, this.height / 2])
-      .end
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [获取节点中心点]
+   * @return {[type]} [description]
+   */
+  get center() {
+    return vector(this.coordinate).add([this.width / 2, this.height / 2]).end;
   }
 
-  set center (position) {
-    this.coordinate = vector(position)
-      .minus([this.width / 2, this.height / 2])
-      .end
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [设置节点中心点]
+   * @param  {[type]} position   [description]
+   * @return {[type]}            [description]
+   */
+  set center(position) {
+    this.coordinate = vector(position).minus([
+      this.width / 2,
+      this.height / 2,
+    ]).end;
   }
 
-  get width () {
-    return this._width
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [获取节点宽度]
+   * @return {[type]} [description]
+   */
+  get width() {
+    return this._width;
   }
 
-  set width (w) {
-    w = Math.floor(w)
-    this._width = w > 50 ? w : 50
-    this.angle()
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [设置节点宽度]
+   * @param  {[type]} w          [description]
+   * @return {[type]}            [description]
+   */
+  set width(w) {
+    w = Math.floor(w);
+    this._width = w > 50 ? w : 50;
+    this.angle();
   }
 
-  get height () {
-    return this._height
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [获取节点高度]
+   * @return {[type]} [description]
+   */
+  get height() {
+    return this._height;
   }
 
-  set height (h) {
-    h = Math.floor(h)
-    this._height = h > 20 ? h : 20
-    this.angle()
+  /**
+   * @author 阿扎
+   * @date            2022-10-19
+   * [设置节点高度]
+   * @param  {[type]} h          [description]
+   * @return {[type]}            [description]
+   */
+  set height(h) {
+    h = Math.floor(h);
+    this._height = h > 20 ? h : 20;
+    this.angle();
   }
 
-  angle () {
-    const
-      w = this.width / 2
-      , h = this.height / 2
-      , center = [0, 0]
+  angle() {
+    const w = this.width / 2,
+      h = this.height / 2,
+      center = [0, 0];
 
     const topLeft = vector(center)
       .minus([w, h])
-      .angle()
-      .end
+      .angle().end;
 
     const topRight = vector(center)
       .add([w, 0])
       .minus([0, h])
-      .angle()
-      .end
+      .angle().end;
 
     const bottomRight = vector(center)
       .add([w, h])
-      .angle()
-      .end
+      .angle().end;
 
     const bottomLeft = vector(center)
       .add([0, h])
       .minus([w, 0])
-      .angle()
-      .end
+      .angle().end;
 
-    this.angleList = [
-      topLeft,
-      topRight,
-      bottomRight,
-      bottomLeft
-    ]
+    this.angleList = [topLeft, topRight, bottomRight, bottomLeft];
   }
 
-  relative (offset) {
+  relative(offset) {
     const angle = vector(offset)
       .minus([this.width / 2, this.height / 2])
-      .angle()
-      .end
-    const angleList = this.angleList
+      .angle().end;
+    const angleList = this.angleList;
     const directionList = [
       direction.top,
       direction.right,
       direction.bottom,
-      direction.left
-    ]
+      direction.left,
+    ];
 
-    let dir = direction.left
+    let dir = direction.left;
 
     angleList.reduce((prev, current, idx) => {
       if (angle >= prev && angle < current) {
-        dir = directionList[idx - 1]
+        dir = directionList[idx - 1];
       }
-      return current
-    })
+      return current;
+    });
 
     return {
       position: this.fixOffset(offset, dir),
-      direction: directionVector[dir]
-    }
+      direction: directionVector[dir],
+    };
   }
 
-  fixOffset (offset, dir) {
+  fixOffset(offset, dir) {
     switch (dir) {
       case direction.top:
-        offset[0] = this.width / 2
-        offset[1] = 0
-        break
+        offset[0] = this.width / 2;
+        offset[1] = 0;
+        break;
       case direction.right:
-        offset[0] = this.width
-        offset[1] = this.height / 2
-        break
+        offset[0] = this.width;
+        offset[1] = this.height / 2;
+        break;
       case direction.bottom:
-        offset[0] = this.width / 2
-        offset[1] = this.height
-        break
+        offset[0] = this.width / 2;
+        offset[1] = this.height;
+        break;
       case direction.left:
       default:
-        offset[0] = 0
-        offset[1] = this.height / 2
-        break
+        offset[0] = 0;
+        offset[1] = this.height / 2;
+        break;
     }
-    return offset
+    return offset;
   }
 
-  remove () {
-    return this.graph.removeNode(this)
+  remove() {
+    return this.graph.removeNode(this);
   }
 
-  toJSON () {
+  toJSON() {
     return {
       [mark.relationMark]: this[mark.relationMark],
       width: this.width,
       height: this.height,
       coordinate: [...this.coordinate],
-      meta: this.meta
-    }
+      meta: this.meta,
+    };
   }
 }
