@@ -2,7 +2,7 @@
 * @Author: 阿扎
 * @Date:   2022-10-17 16:20:14
 * @Last Modified by:   Azha
-* @Last Modified time: 2022-10-18 09:52:28
+* @Last Modified time: 2022-10-20 17:50:28
 */
 
 import {
@@ -19,6 +19,14 @@ import {
 export default class GraphLink {
   static distance = 15
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [构造函数]
+   * @param  {[type]} options    [description]
+   * @param  {[type]} graph      [description]
+   * @return {[type]}            [description]
+   */
   constructor (options, graph) {
     const {
       start,
@@ -46,10 +54,23 @@ export default class GraphLink {
     this.endAt = endAt
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [获取终点节点]
+   * @return {[type]} [description]
+   */
   get end () {
     return this._end
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [设置终点节点]
+   * @param  {[type]} node       [description]
+   * @return {[type]}            [description]
+   */
   set end (node) {
     if (this.start === node) {
       return false
@@ -58,20 +79,46 @@ export default class GraphLink {
     }
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [获取起始坐标]
+   * @return {[type]} [description]
+   */
   get startAt () {
     return this._startAt
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [设置起始坐标]
+   * @param  {[type]} offset     [description]
+   * @return {[type]}            [description]
+   */
   set startAt (offset) {
     const relative = this.start.relative(offset)
     this._startAt = relative.position
     this.startDirection = relative.direction
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [获取终点坐标]
+   * @return {[type]} [description]
+   */
   get endAt () {
     return this._endAt
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [设置终点坐标]
+   * @param  {[type]} offset     [description]
+   * @return {[type]}            [description]
+   */
   set endAt (offset) {
     if (this.end) {
       const relative = this.end.relative(offset)
@@ -82,10 +129,23 @@ export default class GraphLink {
     }
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [获取移动位置]
+   * @return {[type]} [description]
+   */
   get movePosition () {
     return this._movePosition
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [设置移动位置]
+   * @param  {[type]} offset     [description]
+   * @return {[type]}            [description]
+   */
   set movePosition (offset) {
     this._movePosition = offset
 
@@ -103,6 +163,12 @@ export default class GraphLink {
       .end
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [获取]
+   * @return {[type]} [description]
+   */
   get pathPointList () {
     const pointList = this.coordinateList()
       , xList = []
@@ -124,12 +190,24 @@ export default class GraphLink {
     }
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [起始点坐标]
+   * @return {[type]} [description]
+   */
   startCoordinate () {
     return vector(this.start.position)
       .add(this.startAt)
       .end
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [终点坐标]
+   * @return {[type]} [description]
+   */
   endCoordinate () {
     if (this.end) {
       return vector(this.end.position)
@@ -140,6 +218,13 @@ export default class GraphLink {
     }
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [坐标列表]
+   * @param  {Number} turnRatio  [description]
+   * @return {[type]}            [description]
+   */
   coordinateList (turnRatio = 0.5) {
     const entryPoint = this.startCoordinate()
     const exitPoint = this.endCoordinate()
@@ -291,10 +376,22 @@ export default class GraphLink {
     return false
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [将连线从图中移除]
+   * @return {[type]} [description]
+   */
   remove () {
     return this.graph.removeLink(this)
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [将连线转换为JSON格式]
+   * @return {[type]} [description]
+   */
   toJSON () {
     return {
       [mark.relationMark]: this[mark.relationMark],

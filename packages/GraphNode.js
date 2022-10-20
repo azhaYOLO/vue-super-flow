@@ -2,7 +2,7 @@
  * @Author: 阿扎
  * @Date:   2022-10-17 16:20:14
  * @Last Modified by:   Azha
- * @Last Modified time: 2022-10-19 17:24:21
+ * @Last Modified time: 2022-10-20 15:10:45
  */
 
 import { minus, uuid, vector, mark } from "./utils";
@@ -10,6 +10,7 @@ import { minus, uuid, vector, mark } from "./utils";
 import { direction, directionVector } from "./types";
 
 export default class GraphNode {
+  //设置节点基本属性
   constructor(props, graph) {
     const {
       width = 180,
@@ -124,24 +125,34 @@ export default class GraphNode {
     this.angle();
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [计算夹角]
+   * @return {[type]} [description]
+   */
   angle() {
     const w = this.width / 2,
       h = this.height / 2,
       center = [0, 0];
 
+    //节点左上角与X轴夹角
     const topLeft = vector(center)
       .minus([w, h])
       .angle().end;
 
+    //节点右上角与X轴夹角
     const topRight = vector(center)
       .add([w, 0])
       .minus([0, h])
       .angle().end;
 
+    //节点右下角与X轴夹角
     const bottomRight = vector(center)
       .add([w, h])
       .angle().end;
 
+    //节点左下角与X轴夹角
     const bottomLeft = vector(center)
       .add([0, h])
       .minus([w, 0])
@@ -150,6 +161,13 @@ export default class GraphNode {
     this.angleList = [topLeft, topRight, bottomRight, bottomLeft];
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [计算相对偏移量]
+   * @param  {[type]} offset     [description]
+   * @return {[type]}            [description]
+   */
   relative(offset) {
     const angle = vector(offset)
       .minus([this.width / 2, this.height / 2])
@@ -177,6 +195,15 @@ export default class GraphNode {
     };
   }
 
+
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [节点左上角到各边中点偏移量]
+   * @param  {[type]} offset     [description]
+   * @param  {[type]} dir        [description]
+   * @return {[type]}            [description]
+   */
   fixOffset(offset, dir) {
     switch (dir) {
       case direction.top:
@@ -200,10 +227,22 @@ export default class GraphNode {
     return offset;
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [将节点从图中移除]
+   * @return {[type]} [description]
+   */
   remove() {
     return this.graph.removeNode(this);
   }
 
+  /**
+   * @author 阿扎
+   * @date            2022-10-20
+   * [将节点转换为JSON格式]
+   * @return {[type]} [description]
+   */
   toJSON() {
     return {
       [mark.relationMark]: this[mark.relationMark],

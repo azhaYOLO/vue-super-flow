@@ -2,7 +2,7 @@
  * @Author: 阿扎
  * @Date:   2022-10-17 16:20:14
  * @Last Modified by:   Azha
- * @Last Modified time: 2022-10-19 17:47:32
+ * @Last Modified time: 2022-10-20 09:30:11
  */
 
 /**
@@ -210,7 +210,7 @@ export function xAxisEqual(vectorA, vectorB) {
 /**
  * @author 阿扎
  * @date            2022-10-19
- * []
+ * [向量方法，调用属性的时候调用方法]
  * @param  {[type]} result     [description]
  * @return {[type]}            [description]
  */
