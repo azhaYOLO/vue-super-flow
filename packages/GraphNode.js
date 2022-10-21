@@ -2,7 +2,7 @@
  * @Author: 阿扎
  * @Date:   2022-10-17 16:20:14
  * @Last Modified by:   Azha
- * @Last Modified time: 2022-10-20 15:10:45
+ * @Last Modified time: 2022-10-21 09:48:08
  */
 
 import { minus, uuid, vector, mark } from "./utils";
@@ -190,11 +190,10 @@ export default class GraphNode {
     });
 
     return {
-      position: this.fixOffset(offset, dir),
-      direction: directionVector[dir],
+      position: this.fixOffset(offset, dir), //坐标相对于左上角增量
+      direction: directionVector[dir], //点所在方向
     };
   }
-
 
   /**
    * @author 阿扎

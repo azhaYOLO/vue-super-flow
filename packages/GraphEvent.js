@@ -1,50 +1,50 @@
 /*
-* @Author: 阿扎
-* @Date:   2022-10-17 16:20:14
-* @Last Modified by:   Azha
-* @Last Modified time: 2022-10-17 16:59:56
-*/
+ * @Author: 阿扎
+ * @Date:   2022-10-17 16:20:14
+ * @Last Modified by:   Azha
+ * @Last Modified time: 2022-10-17 16:59:56
+ */
 
 export default class GraphEvent {
-  constructor () {
-    this.listeners = {}
+  constructor() {
+    this.listeners = {};
   }
 
-  add (type, callback) {
+  add(type, callback) {
     if (!(type in this.listeners)) {
-      this.listeners[type] = []
+      this.listeners[type] = [];
     }
-    this.listeners[type].push(callback)
+    this.listeners[type].push(callback);
   }
 
-  remove (type, callback) {
+  remove(type, callback) {
     if (!(type in this.listeners)) {
-      return
+      return;
     }
-    const stack = this.listeners[type]
+    const stack = this.listeners[type];
     for (let i = 0, l = stack.length; i < l; i++) {
       if (stack[i] === callback) {
-        stack.splice(i, 1)
-        return this.remove(type, callback)
+        stack.splice(i, 1);
+        return this.remove(type, callback);
       }
     }
   }
 
-  dispatch (event, breakOff = false) {
+  dispatch(event, breakOff = false) {
     if (!(event.type in this.listeners)) {
-      return
+      return;
     }
-    const stack = this.listeners[event.type]
-    event.target = this
+    const stack = this.listeners[event.type];
+    event.target = this;
 
     if (breakOff) {
       stack.some((fun, idx) => {
-        const result = fun.call(this, event)
-        if (result) stack.unshift(...stack.splice(idx, 1))
-        return result
-      })
+        const result = fun.call(this, event);
+        if (result) stack.unshift(...stack.splice(idx, 1));
+        return result;
+      });
     } else {
-      stack.forEach(fun => fun.call(this, event))
+      stack.forEach((fun) => fun.call(this, event));
     }
   }
 }
