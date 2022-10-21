@@ -1,4 +1,3 @@
-
 <template>
   <div class="super-flow-base-demo">
     <super-flow
@@ -127,7 +126,7 @@ export default {
         desc: "",
       },
 
-      origin: [681, 465],
+      origin: [100, 300],
       nodeList: [],
       linkList: [],
 
@@ -146,8 +145,8 @@ export default {
               );
               if (!start) {
                 graph.addNode({
-                  width: 100,
-                  height: 80,
+                  width: 120,
+                  height: 100,
                   coordinate: coordinate,
                   meta: {
                     prop: "start",
@@ -162,13 +161,21 @@ export default {
             disable: false,
             selected: (graph, coordinate) => {
               graph.addNode({
-                width: 160,
-                height: 80,
-                coordinate: coordinate,
+                width: 120,
+                height: 100,
+                // coordinate: [coordinate[0], 0],
+                coordinate: [200 * graph.nodeList.length, 0],
                 meta: {
                   prop: "condition",
                   name: "条件节点",
                 },
+              });
+              graph.addLink({
+                start: graph.nodeList[graph.nodeList.length - 2],
+                end: graph.nodeList[graph.nodeList.length - 1],
+                startAt: [100, 40],
+                endAt: [0, 40],
+                meta: null,
               });
             },
           },
@@ -177,13 +184,20 @@ export default {
             disable: false,
             selected: (graph, coordinate) => {
               graph.addNode({
-                width: 160,
-                height: 80,
-                coordinate: coordinate,
+                width: 120,
+                height: 100,
+                coordinate: [200 * graph.nodeList.length, 0],
                 meta: {
                   prop: "approval",
                   name: "审批节点",
                 },
+              });
+              graph.addLink({
+                start: graph.nodeList[graph.nodeList.length - 2],
+                end: graph.nodeList[graph.nodeList.length - 1],
+                startAt: [100, 40],
+                endAt: [0, 40],
+                meta: null,
               });
             },
           },
@@ -192,13 +206,20 @@ export default {
             disable: false,
             selected: (graph, coordinate) => {
               graph.addNode({
-                width: 160,
-                height: 80,
-                coordinate: coordinate,
+                width: 120,
+                height: 100,
+                coordinate: [200 * graph.nodeList.length, 0],
                 meta: {
                   prop: "cc",
                   name: "抄送节点",
                 },
+              });
+              graph.addLink({
+                start: graph.nodeList[graph.nodeList.length - 2],
+                end: graph.nodeList[graph.nodeList.length - 1],
+                startAt: [100, 40],
+                endAt: [0, 40],
+                meta: null,
               });
             },
           },
@@ -211,13 +232,20 @@ export default {
             },
             selected: (graph, coordinate) => {
               graph.addNode({
-                width: 80,
-                height: 50,
-                coordinate: coordinate,
+                width: 120,
+                height: 100,
+                coordinate: [200 * graph.nodeList.length, 0],
                 meta: {
                   prop: "end",
                   name: "结束节点",
                 },
+              });
+              graph.addLink({
+                start: graph.nodeList[graph.nodeList.length - 2],
+                end: graph.nodeList[graph.nodeList.length - 1],
+                startAt: [100, 40],
+                endAt: [0, 40],
+                meta: null,
               });
             },
           },
@@ -287,192 +315,49 @@ export default {
         id: "nodeS3WgFnzCI15X58Qw",
         width: 120,
         height: 100,
-        coordinate: [-600, -150],
-        // coordinate: [-644, -148],
+        coordinate: [0, 0],
         meta: {
           prop: "start",
           name: "开始节点",
-          desc: "START", 
+          desc: "START",
         },
       },
-      // {
-      //   id: "nodefHsy9uJObPtdHZv1",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [-200, -148],
-      //   meta: {
-      //     prop: "approval",
-      //     name: "审批节点",
-      //     desc: "111111",
-      //   },
-      // },
-      // {
-      //   id: "nodeni9QOqT3mI7hsMau",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [-442, -275],
-      //   meta: {
-      //     prop: "condition",
-      //     name: "条件节点",
-      //   },
-      // },
-      // {
-      //   id: "nodeZBK0ZPpgMe1exezE",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [-200, -275],
-      //   meta: {
-      //     prop: "approval",
-      //     name: "审批节点",
-      //   },
-      // },
-      // {
-      //   id: "nodeqkK9zjcDz53xKRlK",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [34, -209],
-      //   meta: {
-      //     prop: "cc",
-      //     name: "抄送节点",
-      //   },
-      // },
-      // {
-      //   id: "nodeDhVU6w2KbEnJCjZs",
-      //   width: 80,
-      //   height: 50,
-      //   coordinate: [286, -133],
-      //   meta: {
-      //     prop: "end",
-      //     name: "结束节点",
-      //   },
-      // },
-      // {
-      //   id: "nodesyxisLH1hJDdPsxx",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [34, -75],
-      //   meta: {
-      //     prop: "cc",
-      //     name: "抄送节点",
-      //   },
-      // },
-      // {
-      //   id: "node0aiA9VuhjkiAdZCs",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [-200, -2],
-      //   meta: {
-      //     prop: "approval",
-      //     name: "审批节点",
-      //   },
-      // },
-      // {
-      //   id: "nodeG3WeFnzCI15X58Qw",
-      //   width: 160,
-      //   height: 80,
-      //   coordinate: [-442, -2],
-      //   meta: {
-      //     prop: "condition",
-      //     name: "条件节点",
-      //   },
-      // },
       {
         id: "node7WXbwOR6kSFD53Hf",
         width: 120,
         height: 100,
-        coordinate: [-400, -150],
+        coordinate: [200, 0],
         meta: {
           prop: "condition",
           name: "条件节点",
           desc: "CONDITION I",
         },
       },
+      {
+        id: "nodefHsy9uJObPtdHZv1",
+        width: 120,
+        height: 100,
+        coordinate: [400, 0],
+        meta: {
+          prop: "approval",
+          name: "审批节点",
+          desc: "APPROVAL I",
+        },
+      },
     ];
     const linkList = [
-      // {
-      //   id: "linkcs9ZhumWeTHrtUy8",
-      //   startId: "nodeS3WgFnzCI15X58Qw",
-      //   endId: "nodeni9QOqT3mI7hsMau",
-      //   startAt: [100, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "linkBDld5rDBw4C6kiva",
-      //   startId: "nodefHsy9uJObPtdHZv1",
-      //   endId: "nodeqkK9zjcDz53xKRlK",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "linkA0ZZxRlDI9AOonuq",
-      //   startId: "node7WXbwOR6kSFD53Hf",
-      //   endId: "nodefHsy9uJObPtdHZv1",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "linkhCKTpRAf89gcujGS",
-      //   startId: "nodeni9QOqT3mI7hsMau",
-      //   endId: "nodeZBK0ZPpgMe1exezE",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "link2o7VZ7DRaSFKtB0g",
-      //   startId: "nodeqkK9zjcDz53xKRlK",
-      //   endId: "nodeDhVU6w2KbEnJCjZs",
-      //   startAt: [160, 40],
-      //   endAt: [0, 25],
-      //   meta: null,
-      // },
-      // {
-      //   id: "linkII013ovDctUDuPLu",
-      //   startId: "nodeS3WgFnzCI15X58Qw",
-      //   endId: "nodeG3WeFnzCI15X58Qw",
-      //   startAt: [100, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "link6MOmsq1EqzlWcG1n",
-      //   startId: "nodeZBK0ZPpgMe1exezE",
-      //   endId: "nodeqkK9zjcDz53xKRlK",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "link52SczSXHmuyKDzRU",
-      //   startId: "nodesyxisLH1hJDdPsxx",
-      //   endId: "nodeDhVU6w2KbEnJCjZs",
-      //   startAt: [160, 40],
-      //   endAt: [0, 25],
-      //   meta: null,
-      // },
-      // {
-      //   id: "link2hBQDTuIG4ZFYyE0",
-      //   startId: "node0aiA9VuhjkiAdZCs",
-      //   endId: "nodesyxisLH1hJDdPsxx",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
-      // {
-      //   id: "linkrwdW87FmOma5rPVo",
-      //   startId: "nodeG3WeFnzCI15X58Qw",
-      //   endId: "node0aiA9VuhjkiAdZCs",
-      //   startAt: [160, 40],
-      //   endAt: [0, 40],
-      //   meta: null,
-      // },
       {
         id: "linknL75dQV0AWZA85sq",
         startId: "nodeS3WgFnzCI15X58Qw",
         endId: "node7WXbwOR6kSFD53Hf",
+        startAt: [100, 40],
+        endAt: [0, 40],
+        meta: null,
+      },
+      {
+        id: "link52SczSXHmuyKDzRU",
+        startId: "node7WXbwOR6kSFD53Hf",
+        endId: "nodefHsy9uJObPtdHZv1",
         startAt: [100, 40],
         endAt: [0, 40],
         meta: null,
@@ -567,7 +452,7 @@ export default {
 
       &.flow-node-condition {
         > header {
-          background-color: #BC1D16;
+          background-color: #bc1d16;
         }
       }
 

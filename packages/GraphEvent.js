@@ -2,7 +2,7 @@
  * @Author: 阿扎
  * @Date:   2022-10-17 16:20:14
  * @Last Modified by:   Azha
- * @Last Modified time: 2022-10-17 16:59:56
+ * @Last Modified time: 2022-10-21 11:27:42
  */
 
 export default class GraphEvent {
@@ -10,6 +10,7 @@ export default class GraphEvent {
     this.listeners = {};
   }
 
+  // 增加监听事件到列表
   add(type, callback) {
     if (!(type in this.listeners)) {
       this.listeners[type] = [];
@@ -17,6 +18,7 @@ export default class GraphEvent {
     this.listeners[type].push(callback);
   }
 
+  // 从列表中移除监听事件
   remove(type, callback) {
     if (!(type in this.listeners)) {
       return;
@@ -30,6 +32,7 @@ export default class GraphEvent {
     }
   }
 
+  // 事件分配
   dispatch(event, breakOff = false) {
     if (!(event.type in this.listeners)) {
       return;

@@ -2,7 +2,7 @@
  * @Author: 阿扎
  * @Date:   2022-10-17 16:20:14
  * @Last Modified by:   Azha
- * @Last Modified time: 2022-10-21 09:48:08
+ * @Last Modified time: 2022-10-21 14:43:00
  */
 
 import { minus, uuid, vector, mark } from "./utils";
@@ -13,7 +13,7 @@ export default class GraphNode {
   //设置节点基本属性
   constructor(props, graph) {
     const {
-      width = 180,
+      width = 100,
       height = 100,
       coordinate = [0, 0],
       meta = null,
