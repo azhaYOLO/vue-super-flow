@@ -137,7 +137,8 @@ export default {
     },
     hasMarkLine: {
       type: Boolean,
-      default: true
+      // default: true
+      default: false
     },
     linkDesc: {
       type: [Function, null],
@@ -309,6 +310,8 @@ export default {
       }
 
       this.moveNodeConf.isMove = false
+      
+
       this.moveNodeConf.node = null
       this.moveNodeConf.offset = null
       arrayReplace(this.moveNodeConf.markLine, [])
@@ -381,7 +384,12 @@ export default {
         arrayReplace(conf.markLine, resultList)
       }
 
-      conf.node.center = position
+      // conf.node.center = position
+      conf.node.center = [position[0],conf.node.height / 2]
+
+      // modifiedPosition = [Math.floor(position[0]/200)*200, position[1]]
+      // modifiedPosition = [position[0], position[1]]
+      // conf.node.center = modifiedPosition
     },
 
     moveTemEdge (evt) {
