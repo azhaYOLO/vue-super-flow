@@ -70,7 +70,7 @@ class Graph extends GraphEvent {
       const startId = link[mark.startMark] || "";
       const endId = link[mark.endMark] || "";
       const pointMap = this.pointMap();
-      console.log(startId, endId);
+      // console.log(startId, endId);
       const start = pointMap[startId];
       const end = pointMap[endId];
       if (start && end) {
@@ -104,6 +104,7 @@ class Graph extends GraphEvent {
       options.constructor === GraphNode ? options : this.createNode(options);
 
     this.nodeList.push(node);
+    // console.log(this.nodeList);
     return node;
   }
 
@@ -136,6 +137,22 @@ class Graph extends GraphEvent {
       });
 
     this.nodeList.splice(idx, 1);
+    this.nodeList.forEach((node, idxg) => {
+      node.coordinate = [idxg * 200, 0];
+    });
+
+    let lL = [];
+    for (let i = 0; i <= this.nodeList.length - 2; i++) {
+      let lk = this.addLink({
+        start: this.nodeList[i],
+        end: this.nodeList[i + 1],
+        startAt: [100, 40],
+        endAt: [0, 40],
+        meta: null,
+      });
+      lL.push(lk);
+    }
+    arrayReplace(this.linkList, lL);
 
     return node;
   }

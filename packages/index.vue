@@ -7,8 +7,8 @@
   <div
     class="super-flow"
     ref="flow-canvas"
-    @contextmenu.prevent.stop="contextmenu">
-
+    @contextmenu.prevent.stop="contextmenu"
+  >
     <graph-line
       v-if="temEdgeConf.visible"
       :padding="linkPadding"
@@ -55,12 +55,10 @@
       @node-mouseleave="nodeMouseleave"
       @node-mouseup="nodeMouseup"
       @side-mousedown="sideMousedown"
-      @node-contextmenu="nodeContextmenu">
-      <template v-slot="{meta}">
-        <slot
-          name="node"
-          :meta="meta">
-        </slot>
+      @node-contextmenu="nodeContextmenu"
+    >
+      <template v-slot="{ meta }">
+        <slot name="node" :meta="meta"> </slot>
       </template>
     </graph-node>
 
@@ -69,12 +67,10 @@
       :graph="graph"
       :position="menuConf.position"
       :list="menuConf.list"
-      :source="menuConf.source">
-      <template v-slot="{item}">
-        <slot
-          name="menuItem"
-          :item="item">
-        </slot>
+      :source="menuConf.source"
+    >
+      <template v-slot="{ item }">
+        <slot name="menuItem" :item="item"> </slot>
       </template>
     </graph-menu>
 
@@ -86,17 +82,17 @@
       @blur="graph.graphSelected = false"
       v-show="graph.graphSelected"
       @mousedown="selectAllMaskMouseDown"
-      @contextmenu.prevent.stop>
-    </div>
+      @contextmenu.prevent.stop
+    ></div>
   </div>
 </template>
 
 <script>
-import Graph from './Graph'
-import GraphMenu from './menu'
-import GraphNode from './node'
-import GraphLine from './link'
-import MarkLine from './markLine'
+import Graph from "./Graph";
+import GraphMenu from "./menu";
+import GraphNode from "./node";
+import GraphLine from "./link";
+import MarkLine from "./markLine";
 
 import {
   getOffset,
@@ -105,107 +101,107 @@ import {
   isFun,
   vector,
   debounce,
-  arrayReplace
-} from './utils'
+  arrayReplace,
+} from "./utils";
 
 export default {
-  name: 'super-flow',
+  name: "super-flow",
   props: {
     relationMark: {
       type: String,
-      default: 'id'
+      default: "id",
     },
     startMark: {
       type: String,
-      default: 'startId'
+      default: "startId",
     },
     endMark: {
       type: String,
-      default: 'endId'
+      default: "endId",
     },
     draggable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     linkAddable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     linkEditable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     hasMarkLine: {
       type: Boolean,
       // default: true
-      default: false
+      default: false,
     },
     linkDesc: {
       type: [Function, null],
-      default: null
+      default: null,
     },
     linkStyle: {
       type: [Function, null],
-      default: null
+      default: null,
     },
     linkBaseStyle: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     markLineColor: {
       type: String,
-      default: '#55abfc'
+      default: "#55abfc",
     },
     origin: {
       type: Array,
-      default: () => [0, 0]
+      default: () => [0, 0],
     },
     nodeList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     linkList: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     graphMenu: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     nodeMenu: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     linkMenu: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     linkPadding: {
       type: Number,
-      default: 50
+      default: 50,
     },
     enterIntercept: {
       type: Function,
-      default: () => true
+      default: () => true,
     },
     outputIntercept: {
       type: Function,
-      default: () => true
-    }
+      default: () => true,
+    },
   },
-  data () {
+  data() {
     return {
       graph: new Graph({
         relationMark: this.relationMark,
         startMark: this.startMark,
         endMark: this.endMark,
-        origin: this.origin
+        origin: this.origin,
       }),
       menuConf: {
         visible: false,
         position: [0, 0],
         source: null,
-        list: []
+        list: [],
       },
       moveNodeConf: {
         isMove: false,
@@ -213,386 +209,401 @@ export default {
         offset: null,
         verticalList: [],
         horizontalList: [],
-        markLine: []
+        markLine: [],
       },
       moveAllConf: {
         isMove: false,
-        downPosition: [0, 0]
+        downPosition: [0, 0],
       },
       temEdgeConf: {
         visible: false,
-        link: null
+        link: null,
       },
       loaded: false,
       clientWidth: 0,
-      clientHeight: 0
-    }
+      clientHeight: 0,
+    };
   },
   components: {
     GraphMenu,
     GraphNode,
     GraphLine,
-    MarkLine
+    MarkLine,
   },
   computed: {
-    maskStyle () {
-      const {
-        top,
-        right,
-        bottom,
-        left
-      } = this.graph.maskBoundingClientRect
+    maskStyle() {
+      const { top, right, bottom, left } = this.graph.maskBoundingClientRect;
       return {
         width: `${right - left}px`,
         height: `${bottom - top}px`,
         top: `${top + this.graph.origin[1]}px`,
-        left: `${left + this.graph.origin[0]}px`
-      }
-    }
+        left: `${left + this.graph.origin[0]}px`,
+      };
+    },
   },
-  mounted () {
-    document.addEventListener('mouseup', this.docMouseup)
-    document.addEventListener('mousemove', this.docMousemove)
-    this.$once('hook:beforeDestroy', () => {
-      document.removeEventListener('mouseup', this.docMouseup)
-      document.removeEventListener('mousemove', this.docMousemove)
-    })
+  mounted() {
+    document.addEventListener("mouseup", this.docMouseup);
+    document.addEventListener("mousemove", this.docMousemove);
+    this.$once("hook:beforeDestroy", () => {
+      document.removeEventListener("mouseup", this.docMouseup);
+      document.removeEventListener("mousemove", this.docMousemove);
+    });
     this.$nextTick(() => {
-      this.graph.initNode(this.nodeList)
-      this.graph.initLink(this.linkList)
-    })
+      this.graph.initNode(this.nodeList);
+      this.graph.initLink(this.linkList);
+    });
   },
   methods: {
-    initMenu (menu, source) {
-      return menu.map(subList => subList
-        .map(item => {
-          let disable
-          let hidden
+    initMenu(menu, source) {
+      return menu
+        .map((subList) =>
+          subList
+            .map((item) => {
+              let disable;
+              let hidden;
 
-          if (isFun(item.disable)) {
-            disable = item.disable(source)
-          } else if (isBool(item.disable)) {
-            disable = item.disable
-          } else {
-            disable = Boolean(item.disable)
-          }
+              if (isFun(item.disable)) {
+                disable = item.disable(source);
+              } else if (isBool(item.disable)) {
+                disable = item.disable;
+              } else {
+                disable = Boolean(item.disable);
+              }
 
-          if (isFun(item.hidden)) {
-            hidden = item.hidden(source)
-          } else if (isBool(item.hidden)) {
-            hidden = item.hidden
-          } else {
-            hidden = Boolean(item.hidden)
-          }
+              if (isFun(item.hidden)) {
+                hidden = item.hidden(source);
+              } else if (isBool(item.hidden)) {
+                hidden = item.hidden;
+              } else {
+                hidden = Boolean(item.hidden);
+              }
 
-          return {
-            ...item,
-            disable,
-            hidden
-          }
-        })
-        .filter(item => !item.hidden)
-      ).filter(sublist => sublist.length)
+              return {
+                ...item,
+                disable,
+                hidden,
+              };
+            })
+            .filter((item) => !item.hidden)
+        )
+        .filter((sublist) => sublist.length);
     },
 
-    showContextMenu (position, list, source) {
-      if (!list.length) return
-      this.$set(this.menuConf, 'position', position)
-      this.$set(this.menuConf, 'list', list)
-      this.$set(this.menuConf, 'source', source)
-      this.menuConf.visible = true
+    showContextMenu(position, list, source) {
+      if (!list.length) return;
+      this.$set(this.menuConf, "position", position);
+      this.$set(this.menuConf, "list", list);
+      this.$set(this.menuConf, "source", source);
+      this.menuConf.visible = true;
     },
 
-    docMouseup (evt) {
+    docMouseup(evt) {
+      // if (this.moveNodeConf.isMove) {
+      //   evt.stopPropagation();
+      //   evt.preventDefault();
+      // }
       if (this.moveNodeConf.isMove) {
-        evt.stopPropagation()
-        evt.preventDefault()
+        const conf = this.moveNodeConf;
+        const posIdx = Math.round(this.moveNodeConf.node.coordinate[0] / 200);
+        // const posIdx = Math.floor(this.moveNodeConf.node.coordinate[0] / 200);
+        // const posIdx = this.moveNodeConf.node.coordinate[0] / 200;
+        console.log(posIdx);
+        const tarNode = this.graph.nodeList.filter((node) => {
+          return node.id === conf.node.id;
+        })[0];
+        const idx = this.graph.nodeList.indexOf(tarNode);
+        this.graph.nodeList.splice(idx, 1);
+        this.graph.nodeList.splice(posIdx, 0, tarNode);
+        this.graph.nodeList.forEach((node, idxg) => {
+          node.coordinate = [idxg * 200, 0];
+        });
+
+        let lL = [];
+        for (let i = 0; i <= this.graph.nodeList.length - 2; i++) {
+          let lk = this.graph.addLink({
+            start: this.graph.nodeList[i],
+            end: this.graph.nodeList[i + 1],
+            startAt: [100, 40],
+            endAt: [0, 40],
+            meta: null,
+          });
+          lL.push(lk);
+        }
+        arrayReplace(this.graph.linkList, lL);
+
+        evt.stopPropagation();
+        evt.preventDefault();
       }
 
-      this.moveNodeConf.isMove = false
-      
+      this.moveNodeConf.isMove = false;
 
-      this.moveNodeConf.node = null
-      this.moveNodeConf.offset = null
-      arrayReplace(this.moveNodeConf.markLine, [])
+      this.moveNodeConf.node = null;
+      this.moveNodeConf.offset = null;
+      arrayReplace(this.moveNodeConf.markLine, []);
 
-      this.temEdgeConf.visible = false
-      this.temEdgeConf.link = null
+      this.temEdgeConf.visible = false;
+      this.temEdgeConf.link = null;
 
-      this.moveAllConf.isMove = false
+      this.moveAllConf.isMove = false;
     },
 
-    docMousemove (evt) {
+    docMousemove(evt) {
       if (this.moveNodeConf.isMove) {
-        this.moveNode(evt)
+        this.moveNode(evt);
       } else if (this.temEdgeConf.visible) {
-        this.moveTemEdge(evt)
+        this.moveTemEdge(evt);
       } else if (this.graph.graphSelected) {
-        this.moveWhole(evt)
+        this.moveWhole(evt);
       } else if (this.linkEditable) {
-        this.graph.dispatch({
-          type: 'mousemove',
-          evt: evt
-        }, true)
+        this.graph.dispatch(
+          {
+            type: "mousemove",
+            evt: evt,
+          },
+          true
+        );
       }
     },
 
-    moveNode (evt) {
-      const distance = 10
-      const conf = this.moveNodeConf
-      const origin = this.graph.origin
+    moveNode(evt) {
+      const distance = 10;
+      const conf = this.moveNodeConf;
+      const origin = this.graph.origin;
       const position = vector(conf.offset)
         .differ(getOffset(evt, this.$el))
         .minus(origin)
-        .add([conf.node.width / 2, conf.node.height / 2])
-        .end
+        .add([conf.node.width / 2, conf.node.height / 2]).end;
 
       if (this.hasMarkLine) {
-        const resultList = []
-        conf.verticalList.some(vertical => {
-          const x = position[0]
-          const result = vertical - distance < x && vertical + distance > x
+        const resultList = [];
+        conf.verticalList.some((vertical) => {
+          const x = position[0];
+          const result = vertical - distance < x && vertical + distance > x;
 
           if (result) {
-            position[0] = vertical
-            vertical = Math.floor(vertical)
-            vertical += origin[0]
-            vertical += vertical % 1 === 0 ? 0.5 : 0
+            position[0] = vertical;
+            vertical = Math.floor(vertical);
+            vertical += origin[0];
+            vertical += vertical % 1 === 0 ? 0.5 : 0;
             resultList.push([
               [vertical, 0],
-              [vertical, this.clientHeight]
-            ])
+              [vertical, this.clientHeight],
+            ]);
           }
-          return result
-        })
-        conf.horizontalList.some(horizontal => {
-          const y = position[1]
-          const result = horizontal - distance < y && horizontal + distance > y
+          return result;
+        });
+        conf.horizontalList.some((horizontal) => {
+          const y = position[1];
+          const result = horizontal - distance < y && horizontal + distance > y;
           if (result) {
-            position[1] = horizontal
-            horizontal = Math.floor(horizontal)
-            horizontal += origin[1]
-            horizontal += horizontal % 1 === 0 ? 0.5 : 0
+            position[1] = horizontal;
+            horizontal = Math.floor(horizontal);
+            horizontal += origin[1];
+            horizontal += horizontal % 1 === 0 ? 0.5 : 0;
             resultList.push([
               [0, horizontal],
-              [this.clientWidth, horizontal]
-            ])
+              [this.clientWidth, horizontal],
+            ]);
           }
-          return result
-        })
+          return result;
+        });
 
-        arrayReplace(conf.markLine, resultList)
+        arrayReplace(conf.markLine, resultList);
       }
 
-      // conf.node.center = position
-      conf.node.center = [position[0],conf.node.height / 2]
+      // conf.node.center = position; //拖拽节点可跟随鼠标
+      conf.node.center = [position[0], conf.node.height / 2]; //拖拽节点，Y坐标锁定
 
       // modifiedPosition = [Math.floor(position[0]/200)*200, position[1]]
       // modifiedPosition = [position[0], position[1]]
       // conf.node.center = modifiedPosition
     },
 
-    moveTemEdge (evt) {
-      this.temEdgeConf.link.movePosition
-        = getOffset(evt, this.$el)
+    moveTemEdge(evt) {
+      this.temEdgeConf.link.movePosition = getOffset(evt, this.$el);
     },
 
-    moveWhole (evt) {
+    moveWhole(evt) {
       if (this.moveAllConf.isMove) {
-        const offset = vector(this.moveAllConf.downPosition)
-          .differ([evt.clientX, evt.clientY])
-          .end
+        const offset = vector(this.moveAllConf.downPosition).differ([
+          evt.clientX,
+          evt.clientY,
+        ]).end;
         arrayReplace(
           this.graph.origin,
-          vector(this.moveAllConf.origin)
-            .add(offset)
-            .end
-        )
+          vector(this.moveAllConf.origin).add(offset).end
+        );
       }
     },
 
-    contextmenu (evt) {
-      const mouseOnLink = this.graph.mouseOnLink
-      const position = getOffset(evt)
-      let list, source
+    contextmenu(evt) {
+      const mouseOnLink = this.graph.mouseOnLink;
+      const position = getOffset(evt);
+      let list, source;
 
       if (mouseOnLink && mouseOnLink.isPointInLink(position)) {
-        list = this.initMenu(this.linkMenu, mouseOnLink)
-        source = mouseOnLink
+        list = this.initMenu(this.linkMenu, mouseOnLink);
+        source = mouseOnLink;
       } else {
-        if (mouseOnLink) this.graph.mouseOnLink = null
-        list = this.initMenu(this.graphMenu, this.graph)
-        source = this.graph
+        if (mouseOnLink) this.graph.mouseOnLink = null;
+        list = this.initMenu(this.graphMenu, this.graph);
+        source = this.graph;
       }
 
-      this.showContextMenu(
-        position,
-        list,
-        source
-      )
+      this.showContextMenu(position, list, source);
     },
 
-    nodeMousedown (node, offset) {
+    nodeMousedown(node, offset) {
       if (this.draggable) {
-        this.clientWidth = this.$el.clientWidth
-        this.clientHeight = this.$el.clientHeight
+        this.clientWidth = this.$el.clientWidth;
+        this.clientHeight = this.$el.clientHeight;
 
-        const verticalList = this.moveNodeConf.verticalList
-        const horizontalList = this.moveNodeConf.horizontalList
+        const verticalList = this.moveNodeConf.verticalList;
+        const horizontalList = this.moveNodeConf.horizontalList;
 
         const centerList = this.graph.nodeList
-          .filter(item => item !== node)
-          .map(node => node.center)
+          .filter((item) => item !== node)
+          .map((node) => node.center);
 
-        arrayReplace(verticalList, [
-          ...new Set(centerList.map(center => center[0]))
-        ].sort((prev, next) => prev - next))
+        arrayReplace(
+          verticalList,
+          [...new Set(centerList.map((center) => center[0]))].sort(
+            (prev, next) => prev - next
+          )
+        );
 
-        arrayReplace(horizontalList, [
-          ...new Set(centerList.map(center => center[1]))
-        ].sort((prev, next) => prev - next))
+        arrayReplace(
+          horizontalList,
+          [...new Set(centerList.map((center) => center[1]))].sort(
+            (prev, next) => prev - next
+          )
+        );
 
-
-        this.moveNodeConf.isMove = true
-        this.moveNodeConf.node = node
-        this.moveNodeConf.offset = offset
+        this.moveNodeConf.isMove = true;
+        this.moveNodeConf.node = node;
+        this.moveNodeConf.offset = offset;
       }
     },
 
-    nodeMouseenter (evt, node, offset) {
-      const link = this.temEdgeConf.link
+    nodeMouseenter(evt, node, offset) {
+      const link = this.temEdgeConf.link;
       if (this.enterIntercept(link.start, node, this.graph)) {
-        link.end = node
-        link.endAt = offset
+        link.end = node;
+        link.endAt = offset;
       }
     },
 
-    nodeMouseleave () {
-      this.temEdgeConf.link.end = null
+    nodeMouseleave() {
+      this.temEdgeConf.link.end = null;
     },
 
-    nodeMouseup () {
-      this.graph.addLink(this.temEdgeConf.link)
+    nodeMouseup() {
+      this.graph.addLink(this.temEdgeConf.link);
     },
 
-    nodeContextmenu (evt, node) {
-      const list = this.initMenu(this.nodeMenu, node)
-      if (!list.length) return
-      this.$set(this.menuConf, 'position', getOffset(evt, this.$el))
-      this.$set(this.menuConf, 'list', list)
-      this.$set(this.menuConf, 'source', node)
-      this.menuConf.visible = true
+    nodeContextmenu(evt, node) {
+      const list = this.initMenu(this.nodeMenu, node);
+      if (!list.length) return;
+      this.$set(this.menuConf, "position", getOffset(evt, this.$el));
+      this.$set(this.menuConf, "list", list);
+      this.$set(this.menuConf, "source", node);
+      this.menuConf.visible = true;
     },
 
-    sideMousedown (evt, node, startAt) {
+    sideMousedown(evt, node, startAt) {
       if (this.linkAddable) {
         const link = this.graph.createLink({
           start: node,
-          startAt
-        })
-        link.movePosition = getOffset(evt, this.$el)
-        this.$set(this.temEdgeConf, 'link', link)
-        this.temEdgeConf.visible = true
+          startAt,
+        });
+        link.movePosition = getOffset(evt, this.$el);
+        this.$set(this.temEdgeConf, "link", link);
+        this.temEdgeConf.visible = true;
       }
     },
 
-    nodeIntercept (node) {
-      return () => this.outputIntercept(node, this.graph)
+    nodeIntercept(node) {
+      return () => this.outputIntercept(node, this.graph);
     },
 
-    menuItemSelect () {
-      this.menuConf.visible = false
+    menuItemSelect() {
+      this.menuConf.visible = false;
     },
 
-    selectAllMaskMouseDown (evt) {
-      this.moveAllConf.isMove = true
-      this.moveAllConf.origin = [...this.graph.origin]
-      this.moveAllConf.downPosition = [
-        evt.clientX,
-        evt.clientY
-      ]
+    selectAllMaskMouseDown(evt) {
+      this.moveAllConf.isMove = true;
+      this.moveAllConf.origin = [...this.graph.origin];
+      this.moveAllConf.downPosition = [evt.clientX, evt.clientY];
     },
 
-    selectedAll () {
-      this.graph.selectAll()
+    selectedAll() {
+      this.graph.selectAll();
     },
 
-    toJSON () {
-      return this.graph.toJSON()
+    toJSON() {
+      return this.graph.toJSON();
     },
 
-    getMouseCoordinate (clientX, clientY) {
-      const offset = getOffset({ clientX, clientY }, this.$el)
-      return vector(offset)
-        .minus(this.graph.origin)
-        .end
+    getMouseCoordinate(clientX, clientY) {
+      const offset = getOffset({ clientX, clientY }, this.$el);
+      return vector(offset).minus(this.graph.origin).end;
     },
 
-    addNode (options) {
-      return this.graph.addNode(options)
-    }
+    addNode(options) {
+      return this.graph.addNode(options);
+    },
   },
   watch: {
-    'graph.graphSelected' () {
+    "graph.graphSelected"() {
       if (this.graph.graphSelected) {
         this.$nextTick(() => {
-          this.$refs.selectAllMask.focus()
-        })
+          this.$refs.selectAllMask.focus();
+        });
       }
     },
-    'graph.mouseOnLink' () {
+    "graph.mouseOnLink"() {
       if (this.graph.mouseOnLink) {
-        document.body.style.cursor = 'pointer'
+        document.body.style.cursor = "pointer";
       } else {
-        document.body.style.cursor = ''
+        document.body.style.cursor = "";
       }
     },
-    origin () {
-      this.graph.origin = this.origin || []
+    origin() {
+      this.graph.origin = this.origin || [];
     },
-    nodeList () {
-      this.graph.initNode(this.nodeList)
+    nodeList() {
+      this.graph.initNode(this.nodeList);
     },
-    linkList () {
-      this.graph.initLink(this.linkList)
-    }
+    linkList() {
+      this.graph.initLink(this.linkList);
+    },
   },
-  install (Vue) {
-    Vue.component(this.name, this)
-  }
-}
+  install(Vue) {
+    Vue.component(this.name, this);
+  },
+};
 </script>
 
 <style lang="less">
 .super-flow {
-  font-family      : Apple System,
-  'SF Pro SC',
-  'SF Pro Display',
-  'Helvetica Neue',
-  Arial,
-  'PingFang SC',
-  'Hiragino Sans GB',
-  STHeiti,
-  'Microsoft YaHei',
-  'Microsoft JhengHei',
-  'Source Han Sans SC',
-  'Noto Sans CJK SC',
-  'Source Han Sans CN',
-  sans-serif;
+  font-family: Apple System, "SF Pro SC", "SF Pro Display", "Helvetica Neue",
+    Arial, "PingFang SC", "Hiragino Sans GB", STHeiti, "Microsoft YaHei",
+    "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC",
+    "Source Han Sans CN", sans-serif;
 
-  position         : relative;
-  background-color : transparent;
-  width            : 100%;
-  height           : 100%;
-  overflow         : hidden;
+  position: relative;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
   > .select-all__mask {
-    position         : absolute;
-    background-color : rgba(85, 175, 255, 0.1);
-    z-index          : 20;
-    border           : 1px dashed #55abfc;
-    cursor           : move;
-    outline          : none;
+    position: absolute;
+    background-color: rgba(85, 175, 255, 0.1);
+    z-index: 20;
+    border: 1px dashed #55abfc;
+    cursor: move;
+    outline: none;
   }
 }
 </style>

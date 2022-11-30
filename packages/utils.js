@@ -321,7 +321,7 @@ export function isObject(val) {
 /**
  * @author 阿扎
  * @date            2022-10-19
- * [替换数组]
+ * [替换数组,用arr2换arr1]
  * @param  {[type]} arr1       [description]
  * @param  {[type]} arr2       [description]
  * @return {[type]}            [description]
