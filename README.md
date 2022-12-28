@@ -1,23 +1,18 @@
-# 基于 VUE 的动态流程图开发
+# 基于 VUE 的可拖拽流程图
 
-- [x] 基础流程图框架
-      基于 vue-super-flow 开发
-- [x] 可增加新节点
-- [x] 增加新节点后默认连线
-      添加 node 的时候，就是将新的 node 默认 push 到一个 nodeList 的尾部，因为我们的流程图没有分支，只要是在 nodeList 里的元素按照在数组里的顺序进行连线。
-- [x] 点击模块可编辑
-      利用一个弹出的 dialog 窗口实现，窗口使用 v-show 指令控制窗口的显示与隐藏，修改节点属性（名称和描述）使用 v-model 控制。
-- [x] 模块可拖拽
-- [x] 拖拽后自动调整顺序
-      读取鼠标事件，获取鼠标的坐标（应该只需要 X 坐标），事先定义若干个取值区间，落在哪个区间就把它插在数组的哪个位置，连线就根据数组元素顺序进行连线。
+- **基础流程图框架：**
+  基于 [vue-super-flow](https://caohuatao.github.io) 开发，由于需求的流程图不存在分支，是单向流动的，所以在此基础上，将节点都固定在一条线上，并且节点之间的间距为固定值。
+- **可增加新节点**
+- **增加新节点后默认连线：**
+  添加 node 的时候，就是将新的 node 默认 push 到一个 nodeList 的尾部，因为我们的流程图没有分支，只要是在 nodeList 里的元素按照在数组里的顺序进行连线。
 
-# vue-super-flow
+- **点击模块可编辑：**
+  利用一个弹出的 dialog 窗口实现，窗口使用 v-show 指令控制窗口的显示与隐藏，修改节点属性（名称和描述）使用 v-model 控制。
+- **模块可拖拽**
+- **拖拽后自动调整顺序：**
+  读取鼠标事件，获取鼠标的坐标（应该只需要 X 坐标），事先定义若干个取值区间，落在哪个区间就把它插在数组的哪个位置，连线就根据数组元素顺序进行连线。
 
-- A flowchart editor component base on Vue.
-- [Demo](https://caohuatao.github.io/demo/)
-- [docs](https://caohuatao.github.io)
-
-## Installation
+## vue-super-flow Installation
 
 ```npm
 
@@ -69,7 +64,7 @@ function linkDesc(link) {
 ### linkBaseStyle
 
 ```json5
-/*
+/**
 // 内置默认样式配置
 {
    hover: '#FF0000',        // 连线 hover 时颜色
@@ -112,6 +107,8 @@ function linkStyle(link) {
 
 ## Example
 
-![默认示例](https://s1.ax1x.com/2020/07/27/ai6iAe.gif)
+![示例](https://raw.githubusercontent.com/azhaYOLO/vue-super-flow/master/demo.gif)
 
-![进阶示例](https://s1.ax1x.com/2020/07/27/aisqzt.gif)
+## Special Thanks to vue-super-flow
+
+想要了解更多样的流程图？请移步[vue-super-flow](https://caohuatao.github.io)😊
