@@ -1,9 +1,21 @@
+# 基于 VUE 的动态流程图开发
+
+- [x] 基础流程图框架
+      基于 vue-super-flow 开发
+- [x] 可增加新节点
+- [x] 增加新节点后默认连线
+      添加 node 的时候，就是将新的 node 默认 push 到一个 nodeList 的尾部，因为我们的流程图没有分支，只要是在 nodeList 里的元素按照在数组里的顺序进行连线。
+- [x] 点击模块可编辑
+      利用一个弹出的 dialog 窗口实现，窗口使用 v-show 指令控制窗口的显示与隐藏，修改节点属性（名称和描述）使用 v-model 控制。
+- [x] 模块可拖拽
+- [x] 拖拽后自动调整顺序
+      读取鼠标事件，获取鼠标的坐标（应该只需要 X 坐标），事先定义若干个取值区间，落在哪个区间就把它插在数组的哪个位置，连线就根据数组元素顺序进行连线。
+
 # vue-super-flow
-* A flowchart editor component base on Vue.
-* Vue flowchart.
-* Vue 流程图。
-* [Demo](https://caohuatao.github.io/demo/)
-* [docs](https://caohuatao.github.io)
+
+- A flowchart editor component base on Vue.
+- [Demo](https://caohuatao.github.io/demo/)
+- [docs](https://caohuatao.github.io)
 
 ## Installation
 
@@ -16,47 +28,46 @@ yarn add vue-super-flow
 ```
 
 ```js
+import SuperFlow from "vue-super-flow";
+import "vue-super-flow/lib/index.css";
 
-import SuperFlow from 'vue-super-flow'
-import 'vue-super-flow/lib/index.css'
-
-Vue.use(SuperFlow)
-
+Vue.use(SuperFlow);
 ```
 
 ## Attributes
 
-|属性                |类型                |默认值                   |描述                                     | 
-|----                | ----              |----                     |----                                     |
-|draggable           |`Boolean`          |`true`                   | 是否开启节点拖拽                         |
-|linkAddable         |`Boolean`          |`true`                   | 是否开启快捷创建 `link`                  |
-|linkEditable        |`Boolean`          |`true`                   | `link` 是否可编辑                       |
-|hasMarkLine         |`Boolean`          |`true`                   | 是否开启拖拽辅助线                       |
-|markLineColor       |`String`           |`#55abfc`                | 辅助线颜色                               |
-|origin              |`Array`            |`[0, 0]`                 | `graph` 的二维坐标系原点                 |
-|nodeList            |`Array`            |`[]`                     | 初始化节点列表                           |
-|linkList            |`Array`            |`[]`                     | 初始化连线列表                           |
-|graphMenu           |`Array`            |`[]`                     | `graph` 的右键菜单列表配置               |
-|nodeMenu            |`Array`            |`[]`                     | `node` 右键菜单列表配置                  |
-|linkMenu            |`Array`            |`[]`                     | `link` 右键菜单配置                      |
-|enterIntercept      |`Function`         |`() => true`             | 创建连线进入节点限制                     |
-|outputIntercept     |`Function`         |`() => true`             | 节点生成连线限制函数                     |
-|[linkDesc](#linkdesc)           |`Function`           |`null`           | 生成 `link` 定制描述文字           |
-|[linkStyle](#linkstyle)         |`Function`           |`null`           | 根据 `link` 定制样式               |
-|[linkBaseStyle](#linkbasestyle) |`Object`             |`{}`             | 连线默认样式配置                    |
-
+| 属性                            | 类型       | 默认值       | 描述                       |
+| ------------------------------- | ---------- | ------------ | -------------------------- |
+| draggable                       | `Boolean`  | `true`       | 是否开启节点拖拽           |
+| linkAddable                     | `Boolean`  | `true`       | 是否开启快捷创建 `link`    |
+| linkEditable                    | `Boolean`  | `true`       | `link` 是否可编辑          |
+| hasMarkLine                     | `Boolean`  | `true`       | 是否开启拖拽辅助线         |
+| markLineColor                   | `String`   | `#55abfc`    | 辅助线颜色                 |
+| origin                          | `Array`    | `[0, 0]`     | `graph` 的二维坐标系原点   |
+| nodeList                        | `Array`    | `[]`         | 初始化节点列表             |
+| linkList                        | `Array`    | `[]`         | 初始化连线列表             |
+| graphMenu                       | `Array`    | `[]`         | `graph` 的右键菜单列表配置 |
+| nodeMenu                        | `Array`    | `[]`         | `node` 右键菜单列表配置    |
+| linkMenu                        | `Array`    | `[]`         | `link` 右键菜单配置        |
+| enterIntercept                  | `Function` | `() => true` | 创建连线进入节点限制       |
+| outputIntercept                 | `Function` | `() => true` | 节点生成连线限制函数       |
+| [linkDesc](#linkdesc)           | `Function` | `null`       | 生成 `link` 定制描述文字   |
+| [linkStyle](#linkstyle)         | `Function` | `null`       | 根据 `link` 定制样式       |
+| [linkBaseStyle](#linkbasestyle) | `Object`   | `{}`         | 连线默认样式配置           |
 
 ### linkDesc
+
 ```js
 function linkDesc(link) {
-   /**
+  /**
      根据 link 对象的属性判断定制连线描述
    */
-   return link.meta ? link.meta.info : ''
+  return link.meta ? link.meta.info : "";
 }
 ```
 
 ### linkBaseStyle
+
 ```json5
 /*
 // 内置默认样式配置
@@ -78,31 +89,29 @@ function linkDesc(link) {
 ```
 
 ### linkStyle
+
 ```js
 function linkStyle(link) {
-   /**
+  /**
      根据 link 对象的属性判断定制连线样式
    */
-   return {
-      // ... 可选属性 参考：[linkBaseStyle](#linkBaseStyle)
-   }
+  return {
+    // ... 可选属性 参考：[linkBaseStyle](#linkBaseStyle)
+  };
 }
 ```
 
-
-
 ## Methods
 
-|方法名               |说明                                        |参数                                    | 
-|----                | ----                                       |----                                    |
-|selectAll         | 选中所有进行拖拽修改 `origin`               |----                                    |
-|toJSON              | 将 `graph` 对象转为普通 json 对象           |----                                    |
-|getMouseCoordinate  | 获取当前鼠标在 `graph` 坐标系的坐标          |clientX, clientY                        |
-|addNode             | 添加节点                                    |options                                 |
+| 方法名             | 说明                                | 参数             |
+| ------------------ | ----------------------------------- | ---------------- |
+| selectAll          | 选中所有进行拖拽修改 `origin`       | ----             |
+| toJSON             | 将 `graph` 对象转为普通 json 对象   | ----             |
+| getMouseCoordinate | 获取当前鼠标在 `graph` 坐标系的坐标 | clientX, clientY |
+| addNode            | 添加节点                            | options          |
 
 ## Example
 
 ![默认示例](https://s1.ax1x.com/2020/07/27/ai6iAe.gif)
 
 ![进阶示例](https://s1.ax1x.com/2020/07/27/aisqzt.gif)
-
