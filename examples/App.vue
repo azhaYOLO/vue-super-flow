@@ -24,12 +24,14 @@
       </template>
     </super-flow>
 
+    <!-- 对话框 -->
     <el-dialog
       :title="drawerConf.title"
       :visible.sync="drawerConf.visible"
       :close-on-click-modal="false"
       width="500px"
     >
+      <!-- 编辑节点 表单 -->
       <el-form
         @keyup.native.enter="settingSubmit"
         @submit.native.prevent
@@ -54,6 +56,7 @@
           </el-input>
         </el-form-item>
       </el-form>
+      <!-- 编辑连线 表单 更换节点位置会被刷新 需考虑取舍-->
       <el-form
         @keyup.native.enter="settingSubmit"
         @submit.native.prevent
@@ -126,10 +129,12 @@ export default {
         desc: "",
       },
 
+      // 设置画布的相对原点
       origin: [100, 300],
       nodeList: [],
       linkList: [],
 
+      // 画布菜单列表
       graphMenuList: [
         [
           {
@@ -161,15 +166,17 @@ export default {
             disable: false,
             selected: (graph, coordinate) => {
               graph.addNode({
+                // 设置固定长宽值
                 width: 120,
                 height: 100,
-                // coordinate: [coordinate[0], 0],
+                // 设置坐标为固定间距
                 coordinate: [200 * graph.nodeList.length, 0],
                 meta: {
                   prop: "condition",
                   name: "条件节点",
                 },
               });
+              // 添加连线,相邻两节点默认连线
               graph.addLink({
                 start: graph.nodeList[graph.nodeList.length - 2],
                 end: graph.nodeList[graph.nodeList.length - 1],
@@ -265,7 +272,9 @@ export default {
           },
         ],
       ],
+      // 节点菜单列表
       nodeMenuList: [
+        // 节点删除操作
         [
           {
             label: "删除",
@@ -278,6 +287,7 @@ export default {
             },
           },
         ],
+        // 节点编辑操作
         [
           {
             label: "编辑",
@@ -287,7 +297,9 @@ export default {
           },
         ],
       ],
+      // 连线菜单列表
       linkMenuList: [
+        // 连线删除操作
         [
           {
             label: "删除",
@@ -297,6 +309,7 @@ export default {
             },
           },
         ],
+        // 连线编辑操作
         [
           {
             label: "编辑",
@@ -309,6 +322,7 @@ export default {
       ],
     };
   },
+  // 画布生成时,先初始化一些节点
   created() {
     const nodeList = [
       {

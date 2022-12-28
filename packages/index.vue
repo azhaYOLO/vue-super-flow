@@ -1,8 +1,3 @@
-<!--
- * User: CHT
- * Date: 2020/5/27
- * Time: 9:52
--->
 <template>
   <div
     class="super-flow"
@@ -254,6 +249,7 @@ export default {
     });
   },
   methods: {
+    // 初始化菜单
     initMenu(menu, source) {
       return menu
         .map((subList) =>
@@ -297,27 +293,37 @@ export default {
       this.menuConf.visible = true;
     },
 
+    // 设置松开鼠标按键事件发生时执行的方法
     docMouseup(evt) {
       // if (this.moveNodeConf.isMove) {
       //   evt.stopPropagation();
       //   evt.preventDefault();
       // }
+      // 移动节点时
       if (this.moveNodeConf.isMove) {
+        // 获取选中节点的属性
         const conf = this.moveNodeConf;
+        // 设置节点位置，判断其落在哪个区间内，默认每200为一个区间
         const posIdx = Math.round(this.moveNodeConf.node.coordinate[0] / 200);
         // const posIdx = Math.floor(this.moveNodeConf.node.coordinate[0] / 200);
         // const posIdx = this.moveNodeConf.node.coordinate[0] / 200;
-        console.log(posIdx);
+        // 在画布中过滤出所选节点的id，存到tarNode中
         const tarNode = this.graph.nodeList.filter((node) => {
           return node.id === conf.node.id;
         })[0];
+        // 获取选中节点在画布节点列表中的下标
         const idx = this.graph.nodeList.indexOf(tarNode);
+        // 替换操作
+        // 删除选中的节点
         this.graph.nodeList.splice(idx, 1);
+        // 在区间所属位置插入tarNode
         this.graph.nodeList.splice(posIdx, 0, tarNode);
+        // 画布列表中的所有节点，重新设置坐标
         this.graph.nodeList.forEach((node, idxg) => {
           node.coordinate = [idxg * 200, 0];
         });
 
+        // 重新连线
         let lL = [];
         for (let i = 0; i <= this.graph.nodeList.length - 2; i++) {
           let lk = this.graph.addLink({
@@ -329,25 +335,32 @@ export default {
           });
           lL.push(lk);
         }
+        // 替换原来的连线列表
         arrayReplace(this.graph.linkList, lL);
 
         evt.stopPropagation();
         evt.preventDefault();
       }
 
+      // 禁止移动
       this.moveNodeConf.isMove = false;
 
+      // 清空
       this.moveNodeConf.node = null;
       this.moveNodeConf.offset = null;
       arrayReplace(this.moveNodeConf.markLine, []);
 
+      // 还原缓存变量
       this.temEdgeConf.visible = false;
       this.temEdgeConf.link = null;
 
+      // 禁止全选移动
       this.moveAllConf.isMove = false;
     },
 
+    // 设置移动鼠标事件发生时执行的方法
     docMousemove(evt) {
+      // 判断移动对象，选择对应的方法
       if (this.moveNodeConf.isMove) {
         this.moveNode(evt);
       } else if (this.temEdgeConf.visible) {
@@ -365,6 +378,7 @@ export default {
       }
     },
 
+    // 移动节点的方法
     moveNode(evt) {
       const distance = 10;
       const conf = this.moveNodeConf;
@@ -413,16 +427,13 @@ export default {
 
       // conf.node.center = position; //拖拽节点可跟随鼠标
       conf.node.center = [position[0], conf.node.height / 2]; //拖拽节点，Y坐标锁定
-
-      // modifiedPosition = [Math.floor(position[0]/200)*200, position[1]]
-      // modifiedPosition = [position[0], position[1]]
-      // conf.node.center = modifiedPosition
     },
 
     moveTemEdge(evt) {
       this.temEdgeConf.link.movePosition = getOffset(evt, this.$el);
     },
 
+    // 移动所有
     moveWhole(evt) {
       if (this.moveAllConf.isMove) {
         const offset = vector(this.moveAllConf.downPosition).differ([
@@ -436,6 +447,7 @@ export default {
       }
     },
 
+    // 设置菜单事件
     contextmenu(evt) {
       const mouseOnLink = this.graph.mouseOnLink;
       const position = getOffset(evt);
@@ -453,6 +465,7 @@ export default {
       this.showContextMenu(position, list, source);
     },
 
+    // 设置按下鼠标事件发生时执行的方法
     nodeMousedown(node, offset) {
       if (this.draggable) {
         this.clientWidth = this.$el.clientWidth;
